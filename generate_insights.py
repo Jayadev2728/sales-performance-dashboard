@@ -2,18 +2,11 @@ import pandas as pd
 from sqlalchemy import create_engine, text
 from groq import Groq
 
-# ---------------------------------------------------------
+
 # 1. Connect to your Postgres database
-#    (same connection details as load_data.py)
-# ---------------------------------------------------------
 engine = create_engine("postgresql://postgres:PASSWORD@localhost:5433/superstore_db")
 
-# ---------------------------------------------------------
-# 2. Pull the key aggregated numbers we already validated
-#    in Step 6 (SQL) and Step 8 (Power BI). We're reusing
-#    the same logic so the AI's summary matches what's
-#    actually on your dashboard.
-# ---------------------------------------------------------
+
 with engine.connect() as conn:
     region_sales = pd.read_sql(text("""
         SELECT region, ROUND(SUM(sales)::numeric, 2) AS total_sales,
@@ -39,13 +32,7 @@ with engine.connect() as conn:
         FROM orders
     """), conn)
 
-# ---------------------------------------------------------
-# 3. Build a clear, data-grounded prompt.
-#    We feed the AI our OWN validated numbers -- it's
-#    writing up findings, not inventing them.
-# ---------------------------------------------------------
-# Pre-compute the loss total ourselves -- never let the LLM
-# do arithmetic on numbers we can calculate exactly in Python.
+
 total_losses = round(losing_subcats["total_profit"].sum(), 2)
 
 prompt = f"""
@@ -67,9 +54,9 @@ Write a 4-5 sentence executive summary highlighting:
 Keep it business-toned, concise, and suitable to paste directly onto a dashboard.
 """
 
-# ---------------------------------------------------------
-# 4. Call Groq's free API (OpenAI-compatible client)
-# ---------------------------------------------------------
+
+# Call Groq's free API (OpenAI-compatible client)
+
 client = Groq(api_key="API_KEY")
 
 response = client.chat.completions.create(
@@ -80,9 +67,7 @@ response = client.chat.completions.create(
 
 insight_text = response.choices[0].message.content
 
-# ---------------------------------------------------------
-# 5. Save it so you can paste it into Power BI / README
-# ---------------------------------------------------------
+
 with open("insights.txt", "w") as f:
     f.write(insight_text)
 
