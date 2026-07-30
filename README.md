@@ -2,7 +2,7 @@
 
 An end-to-end data analytics project that pulls raw retail transaction data through a full pipeline — PostgreSQL for storage and analysis, Python for data engineering, Power BI for visualization, and an LLM-powered insight generator that auto-writes an executive summary from live data.
 
-![Dashboard Screenshot](dashboard_screenshot.png)
+<img width="1401" height="751" alt="Sales_Dashoard" src="https://github.com/user-attachments/assets/770213a5-d8b0-4110-a658-2d5c8585a59e" />
 
 ## Overview
 
