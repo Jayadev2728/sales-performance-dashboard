@@ -60,9 +60,6 @@ FROM monthly_sales
 ORDER BY month;
 
 
-
-
-
 --Top 10 Most Profitable Sub-Categories
 
 SELECT
@@ -73,7 +70,6 @@ FROM orders
 GROUP BY sub_category
 ORDER BY total_profit DESC
 LIMIT 10;
-
 
 
 
